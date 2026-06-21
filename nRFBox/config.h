@@ -28,6 +28,21 @@
 #define NRF_CE_PIN_C    15  
 #define NRF_CSN_PIN_C   2  
 
+/* MAPA DE CONEXÃO CC1101 (Use os pinos que você listou como livres)
+   VCC   -> 3.3V
+   GND   -> GND
+   SI    -> GPIO 23 (MOSI padrão ESP32)
+   SO    -> GPIO 19 (MISO padrão ESP32)
+   SCK   -> GPIO 18 (SCK padrão ESP32)
+   CSn   -> GPIO 12 (Seu pino D12 livre)
+   GDO0  -> GPIO 4  (Seu pino D4 livre)
+   GDO2  -> GPIO 34 (Seu pino D34 livre - opcional para interrupções avançadas)
+*/
+
+#define CC1101_CSN_PIN  12
+#define CC1101_GDO0_PIN 4
+#define CC1101_GDO2_PIN 34 
+
 // Common dependencies
 #include "setting.h"
 #include <Arduino.h>
@@ -41,6 +56,7 @@
 #include <string>
 #include <SD.h>
 #include <Update.h>
+#include <ELECHOUSE_CC1101_SRC_DRV.h> // Adicionado
 
 U8G2_SSD1306_128X64_NONAME_F_HW_I2C u8g2(U8G2_R0, /* reset=*/ U8X8_PIN_NONE);
 
@@ -73,56 +89,27 @@ extern U8G2_SSD1306_128X64_NONAME_F_HW_I2C u8g2;
 extern Adafruit_NeoPixel pixels;
 
 // BLE-related namespaces
-namespace BleJammer {
-  void blejammerSetup();
-  void blejammerLoop();
-}
-
-namespace BleScan {
-  void blescanSetup();
-  void blescanLoop();
-}
-
-namespace SourApple {
-  void sourappleSetup();
-  void sourappleLoop();
-}
-
-namespace Spoofer {
-  void spooferSetup();
-  void spooferLoop();
-}
+namespace BleJammer { void blejammerSetup(); void blejammerLoop(); }
+namespace BleScan { void blescanSetup(); void blescanLoop(); }
+namespace SourApple { void sourappleSetup(); void sourappleLoop(); }
+namespace Spoofer { void spooferSetup(); void spooferLoop(); }
 
 // nRF24-related namespaces
-namespace Analyzer {
-  void analyzerSetup();
-  void analyzerLoop();
-}
-
-namespace ProtoKill {
-  void blackoutSetup();
-  void blackoutLoop();
-}
-
-namespace Scanner {
-  void scannerSetup();
-  void scannerLoop();
-}
-
-namespace Jammer {
-  void jammerSetup();
-  void jammerLoop();
-}
+namespace Analyzer { void analyzerSetup(); void analyzerLoop(); }
+namespace ProtoKill { void blackoutSetup(); void blackoutLoop(); }
+namespace Scanner { void scannerSetup(); void scannerLoop(); }
+namespace Jammer { void jammerSetup(); void jammerLoop(); }
 
 // WiFi-related namespaces
-namespace WifiScan {
-  void wifiscanSetup();
-  void wifiscanLoop();
-}
+namespace WifiScan { void wifiscanSetup(); void wifiscanLoop(); }
+namespace Deauther { void deautherSetup(); void deautherLoop(); }
 
-namespace Deauther {
-  void deautherSetup();
-  void deautherLoop();
+// SubGHz Namespace
+namespace SubGHz {
+  void subghzSetup();
+  void subghzLoop();
+  void copySignal();
+  void playSignal();
 }
 
 #endif // CONFIG_H
